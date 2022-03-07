@@ -17,11 +17,16 @@ const getAuditBoardUserId = async (baseUrl, apiKey, email) => {
     try {
         const response = await axios(getUserRequest);
         const users = response.data.Resources,
-            matchingUser = users.find(user => user.email.toLowerCase() === email);
-        if (matchingUser)
-            return matchingUser.id;
-        else
-            errorCallback(`No user found with email ${email}.`);
+            matchingUserArray = users.filter(user => user.email.toLowerCase() === email);
+
+        if(matchingUserArray.length === 1) {
+            return matchingUserArray[0].id;
+        } else {
+            matchingUserArray.length > 1 ?
+                errorCallback(`Multiple account found with email ${email}.`) :
+                errorCallback(`No accounts found with email ${email}.`);
+        }
+
     } catch (err) {
         errorCallback(`Error finding Insight users. Error: ${err}`);
     }
