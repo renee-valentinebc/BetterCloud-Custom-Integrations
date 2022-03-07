@@ -108,7 +108,6 @@ module.exports = async (input, callback, error) => {
         input.request = formatCreateOrgUserRequest(baseUrl, apiKey, requestBody);
         callback(input.request);
     } catch (err) {
-        console.log(err);
         error(err);
     }
 };
