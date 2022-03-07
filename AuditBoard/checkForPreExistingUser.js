@@ -41,7 +41,6 @@ module.exports = async (input, callback, error) => {
 
         callback(input.request);
     } catch (err) {
-        console.log(err);
         error(err);
     }
 };
