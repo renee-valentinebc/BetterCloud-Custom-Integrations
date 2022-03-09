@@ -14,11 +14,15 @@ const getAuditBoardRoleId = async (baseUrl, apiKey, roleName) => {
     try {
         const response = await axios(getUserRequest);
         const groups = response.data.Resources,
-            matchingRoleId = groups.find(group => group.displayName === roleName);
-        if (matchingRoleId)
-            return matchingRoleId.id;
-        else
-            errorCallback(`No group found with display name ${roleName}.`);
+            matchingRoleIdArray = groups.filter(group => group.displayName === roleName);
+        
+        if(matchingRoleIdArray.length === 1){
+            return matchingRoleIdArray[0].id
+        }else{
+            matchingRoleIdArray.length > 1 ?
+                errorCallback(`Multiple groups found with display name ${roleName}.`) :
+                errorCallback(`No group found with display name ${roleName}.`) ;
+        }
     } catch (err) {
         errorCallback(`Error finding group with display name ${roleName}. Error: ${err}`);
     }
