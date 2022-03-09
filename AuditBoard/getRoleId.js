@@ -20,7 +20,6 @@ const getAuditBoardRoleId = async (baseUrl, apiKey, roleName) => {
         else
             errorCallback(`No group found with display name ${roleName}.`);
     } catch (err) {
-        console.log(err);
         errorCallback(`Error finding group with display name ${roleName}. Error: ${err}`);
     }
 };
