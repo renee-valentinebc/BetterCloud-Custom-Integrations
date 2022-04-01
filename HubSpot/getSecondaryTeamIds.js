@@ -64,17 +64,27 @@ async function getUserRoleId(email, error) {
     };
 
     try {
-        const response = await axios(getUsersRequest);
-        const users = response.data.results ? response.data.results : [];
-        const matchingUsers = users.filter(user => user.email.toLowerCase() === email.toLowerCase());
+        let matchingUserRoleId = null;
+        while (!matchingUserRoleId) {
+            const response = await axios(getUsersRequest);
+            const users = response.data.results ? response.data.results : [];
 
-        if (matchingUsers.length > 1) {
-            return error(`Multiple users found for email ${email}`);
-        } else if (matchingUsers.length === 0) {
-            return error(`No users found for email ${email}`);
-        } else {
-            return matchingUsers[0].roleId;
+            const matchingUsers = users.filter(user => user.email ? user.email.toLowerCase() === email.toLowerCase() : false);
+
+            if (matchingUsers.length > 1) {
+                return error(`Multiple users found for email ${email}`);
+            } else if (matchingUsers.length === 0) {
+                const nextPageURL = response.data.paging.next.link;
+                if (nextPageURL) {
+                    getUsersRequest.url = nextPageURL;
+                } else {
+                    return error(`No users found for email ${email}`);
+                }
+            } else {
+                matchingUserRoleId = matchingUsers[0].roleId;
+            }
         }
+        return matchingUserRoleId;
     } catch (err) {
         error(`Failed to get User Role Id for email ${email}: ${err.message}`);
     }
