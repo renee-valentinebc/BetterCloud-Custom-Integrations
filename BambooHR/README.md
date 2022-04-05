@@ -24,7 +24,7 @@ When you create a webhook in BambooHR - it will attempt to send all changes from
 
 To prevent this, we make sure that our triage scripts properly conditions off the fields that are sent from BambooHR as well as properly handles failed conditions.
 
-Consider this chunk of code that is taken from the triage script. We make sure to condition off the "triggering" field, in this case it is work email, in multiple areas. The first case is to make sure a user isn't onboarded upon creation. The second case is to prevent the "Field Change" webhook for "department" from firing upon creation. **It's important to note that we do not error out on failed conditions, since that will force BambooHR to retry that webhook.**
+Consider this chunk of code that is taken from the triage script. We make sure to condition off the "triggering" field, in this case it is work email, in multiple areas. In the first case the condition ensures sure a user isn't onboarded upon creation. In the second case it exists to prevent the "Field Change" webhook for "department" from firing upon creation. **It's important to note that we do not error out on failed conditions, since that will force BambooHR to retry that webhook. We simply update the email status and fulfill the action so that we return a successful response.**
 ```javascript
  switch (changedField) {
     case "workEmail":
