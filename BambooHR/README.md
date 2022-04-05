@@ -9,7 +9,7 @@
     * BambooHR sets users' status to "active" upon creation. This poses several issues:
       * You may not want the onboarding webhook to fire when your user is created. Onboarding date may be different from creation date.
       * Not all of user's info is inputted upon creation. For example, work email may be filled in at a later date, which will break workflows.
-      * All  the "Field Change" (department, job title, etc.) webhooks will fire upon creation since BambooHR treats a new user creation as field changes for all fields. See [Preventing BambooHR Infinite Retries] 
+      * All  the "Field Change" (department, job title, etc.) webhooks will fire upon creation since BambooHR treats a new user creation as field changes for all fields. See [Preventing BambooHR Infinite Retries](#Preventing BambooHR Infinite Retries)
 
   * Suggestions:
     * Monitor off of work email or some field that is known to be the last thing to be filled out. Only fill out when user should be onboarded.
