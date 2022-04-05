@@ -1,5 +1,8 @@
 # BetterCloud <> BambooHR Trigger Integration
-
+## How This Works
+- PROVIDE DIAGRAM OF FLOW
+- PROVIDE DETAIL ON INBOUND REQUEST TRANSFORMERS AND ACTIONS ENDPOINT
+- PROVIDE DETAIL ON WHY WE HAVE TO DO IT THIS WAY
 ## Installation Guide
 ### Pre-Requisites
 * Postman
@@ -16,7 +19,6 @@
 * Need:
   * BetterCloud API Key
   * Triage Script ID
-## What is an Inbound Request Transformer?
 
 ## Best Practices
 * For onboarding, **DO NOT** monitor off the field "Status" IF Onboarding Date !== Creation Date OR not all crucial information is filled out upon user creation.
