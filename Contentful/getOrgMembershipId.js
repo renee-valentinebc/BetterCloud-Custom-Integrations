@@ -74,6 +74,6 @@ module.exports = async (input, callback, error) => {
         request.url = deleteUrlEndpoint;
         callback(request);
     } catch (err) {
-        errorCallback(err);
+        errorCallback(`getorgMembershipId pre-request failed: ${err}`);
     }
 };
