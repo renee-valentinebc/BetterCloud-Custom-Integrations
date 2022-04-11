@@ -73,6 +73,6 @@ module.exports = async (input, callback, error) => {
         request.url = deleteUrlEndpoint;
         callback(request);
     } catch (err) {
-        errorCallback(err);
+        errorCallback(`getSpaceIdAndMemId pre-request failed: ${err}`);
     }
 };
