@@ -45,9 +45,9 @@ const getSpaceIdAndSpaceMembershipId = async (id, spaceName) => {
     try {
         const response = await axios(getMembershipFromSpace);
         const spaceMembership = response.data.items;
-        let urlFillers = [spaceMembership[0].sys.space.sys.id, spaceMembership[0].sys.id]
+        let spaceMembershipIds = [spaceMembership[0].sys.space.sys.id, spaceMembership[0].sys.id]
         if (spaceMembership.length === 1) {
-            return urlFillers;
+            return spaceMembershipIds;
         }
         else {
             errorCallback(`Indeterminate amount of space memberships found for this user's id: ${id}`)
