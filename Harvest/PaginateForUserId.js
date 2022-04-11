@@ -29,7 +29,6 @@ async function getUserId(email, error) {
                     return error(`No users found for email ${email}`);
                 }
             } else {
-                console.log(matchingUsers[0]);
                 matchingUserId = matchingUsers[0].id;
             }
         }
