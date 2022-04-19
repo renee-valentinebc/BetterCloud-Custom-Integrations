@@ -78,8 +78,8 @@ const handleSingleEmployee = async (employee) => {
                 }
                 statusEmail += `Manager changed, but Work Email is not set. Perhaps this is a new user? BetterCloud workflow will not run. Employee data: ${JSON.stringify(employee.fields)}\n`;
                 break;
-            case "employmentStatus":
-                if (employee.fields["employmentStatus"] === "Terminated") {
+            case "status":
+                if (employee.fields["status"] === "Inactive" && employee.fields["employmentStatus"] === "Terminated") {
                     url = secrets.offboardingTrigger;
                     statusEmail += `User terminated in BambooHR. Employee data: ${JSON.stringify(employee.fields)}\n`;
                 } else {
