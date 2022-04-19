@@ -1,42 +1,10 @@
 # BetterCloud <> BambooHR Trigger Integration
 ## How This Works
-- PROVIDE DIAGRAM OF FLOW
-- PROVIDE DETAIL ON INBOUND REQUEST TRANSFORMERS AND ACTIONS ENDPOINT
-- PROVIDE DETAIL ON WHY WE HAVE TO DO IT THIS WAY
-## Installation Guide
-### Pre-Requisites
-* Postman
-* BetterCloud Admin Access
-* BambooHR Admin Access
-* WebHooks are enabled in BambooHR. This is enabled by going through BambooHR support.
+WORK IN PROGRESS
 ### Environment Variables
 * bcAdminEmail
 * bettercloudIntegrationId
-### Setting Up BambooHR Webhooks
-### Setting Up BetterCloud Triggers
-### Setting Up Inbound Request Transformer
-#### Building the Request Endpoint
-* Need:
-  * BetterCloud API Key
-  * Triage Script ID
-
-## Best Practices
-* For onboarding, **DO NOT** monitor off the field "Status" IF Onboarding Date !== Creation Date OR not all crucial information is filled out upon user creation.
-  * Questions to Ask during Scoping:
-      * When a user is created, is all the information that you plan to send to BetterCloud inputted upon creation?
-      * Do you onboard as soon as a user is created? Or is that usually at a later date?
-  * Reasoning:
-    * BambooHR sets users' status to "active" upon creation. This poses several issues:
-      * You may not want the onboarding webhook to fire when your user is created. Onboarding date may be different from creation date.
-      * Not all of user's info is inputted upon creation. For example, work email may be filled in at a later date, which will break workflows.
-      * All the "Field Change" webhooks (department, job title, etc.) will fire upon creation since BambooHR treats a new user creation as field changes for all fields. See [Preventing BambooHR Infinite Retries](#Preventing BambooHR Infinite Retries) to see how we handle this.
-  * Suggestions:
-    * Monitor off of work email or some field that is known to be the last thing to be filled out. Only fill out when user should be onboarded.
-* It's best to encourage Work Email to be created at the beginning of their onboarding process rather than creating the email during the process and writing back to BambooHR with that email:
-  * Questions to Ask During Scoping:
-    * Will workEmail be constructed and inputted into BambooHR upon creation? Or is workEmail usually created at a later time and then inputted into BambooHR after?
-  * Reasoning:
-    * If the email is inputted at the beginning, there will be no need for an email write-back to Bamboo. 
+* <type of change>ChangeTrigger
 
 ## Preventing BambooHR Infinite Retries
 When you create a webhook in BambooHR - it will attempt to send all changes from the inception of the webhook to the endpoint until it receives a 200 for those events, indefinitely. If there are issues, a collection of events will continue to grow which can cause issues on BetterCloud due to API limits.
@@ -61,6 +29,19 @@ Consider this chunk of code that is taken from the Inbound Request Transformer t
         break;
     default:
         statusEmail += `No applicable changed fields. No workflow will run. Employee data: ${JSON.stringify(employee.fields)}\n`;
+        break;
+}
+```
+## Sometimes Changed Fields Will Come Through As Integers
+There are certain change fields that will only come through as integers/IDs. To map these values to the field in BambooHR, use Bamboo's API to fetch the list of fields and their IDs. See documentation: https://documentation.bamboohr.com/reference/metadata-get-a-list-of-fields
+```javascript
+ switch (changedField) {
+    case 91: // This is the "supervisorEmail" field ID
+        if (workEmail !== null) {
+            url = secrets.managerChangeTrigger;
+            statusEmail += `User's manager changed in BambooHR. Employee data: ${JSON.stringify(employee.fields)}\n`
+        }
+        statusEmail += `Manager changed, but Work Email is not set. Perhaps this is a new user? BetterCloud workflow will not run. Employee data: ${JSON.stringify(employee.fields)}\n`;
         break;
 }
 ```
