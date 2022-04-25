@@ -27,7 +27,7 @@ C --> |After All Events Processed|Z[BetterCloud Action Executes]
 ### Environment Variables
 * bcAdminEmail
 * bettercloudIntegrationId
-* <type of change>ChangeTrigger
+* {type of change}ChangeTrigger
 
 ## Preventing BambooHR Infinite Retries
 When you create a webhook in BambooHR - it will attempt to send all changes from the inception of the webhook to the endpoint until it receives a 200 for those events, indefinitely. 
