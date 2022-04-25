@@ -20,7 +20,7 @@ W2[BambooHR Title Change Webhook] -->|Event 2| B(BetterCloud Action Endpoint)
 W3[BambooHR User Terminated Webhook] -->|Event 3| B(BetterCloud Action Endpoint)
 B --> |Inbound Request Transformer 'Triage Script' Executes w/ Payload| C{Triage Script}
 C -->|Event 1:<br/>New User| D[Onboarding Trigger] --> G[Onboarding Workflow]
-C -->|Event 2:<br/>Updated Title Field| E[Mid-lifecycle Trigger] --> H[Onboarding Workflow]
+C -->|Event 2:<br/>Updated Title Field| E[Mid-Life Cycle Trigger] --> H[Mid-Life Cycle Workflow]
 C -->|Event 3:<br/>User Terminated| F[User Terminated Trigger] --> I[Offboarding Workflow]
 C --> |After All Events Processed|Z[BetterCloud Action Executes]
 ```
