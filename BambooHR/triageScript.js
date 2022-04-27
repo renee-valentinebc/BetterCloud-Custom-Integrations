@@ -99,7 +99,7 @@ const handleSingleEmployee = async (employee) => {
 }
 
 /**
- * Sends a status email to an email address dependent on which Trigger was executed.
+ * Returns a request object for the Send Email action
  * @param {String} statusEmail
  * @returns {Object}
  */
@@ -112,6 +112,18 @@ function formatSendEmailRequest(statusEmail) {
         "b6bea60c-8dc9-4bd9-a950-d5f8aa2c6a60": secrets.bettercloudIntegrationId
     }
 }
+
+/**
+ * Driver function. Has access to:
+ *  - Action Inputs: request body, request url, request headers
+ *  - Secrets: environment variables, shared auth
+ *
+ *  callback is called at the end of function with request object
+ *  error is called when an error occurs
+ * @param {Object} input
+ * @param {Function} callback
+ * @param {Function} error
+ */
 
 module.exports = async (input, callback, error) => {
     try {
