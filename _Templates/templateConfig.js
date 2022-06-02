@@ -92,14 +92,6 @@ let error = function (name) {
 };
 
 async function executeWebhook(request) {
-    //const axios = require('axios');
-
-    // let rebuiltRequest = {
-    //     url: request.url,
-    //     method: request.method,
-    //     headers: request.headers,
-    //     data: request.body
-    // };
 
     axios(rebuiltRequest).then(response => {
         console.log("Webhook Request: " + JSON.stringify(rebuiltRequest));
@@ -111,15 +103,27 @@ async function executeWebhook(request) {
 
 async function forOf() {
     let result = [];
-    for (const script of scripts) {
-        result.push(await script(input, callback, error))
-    }
 
     for (const property in input.secrets) {
         if(property.indexOf("auth_") !== -1){
             const injectedAuthHeaderKey = property.replace("auth_","");
             input.request.headers[injectedAuthHeaderKey] = input.secrets[property];
         }
+    }
+
+    if( typeof(input.request.payload) === 'object' ) {
+        if (input.request.method === "GET" || input.request.method === "POST") {
+            if (!input.request.headers["Content-Type"]) {
+                input.request.headers["Content-Type"] = "application/json;charset=UTF-8";
+            }
+            if (!input.request.headers["Accept"]) {
+                input.request.headers["Accept"] = "application/json;charset=UTF-8";
+            }
+        }
+    }
+
+    for (const script of scripts) {
+        result.push(await script(input, callback, error))
     }
 
     return executeWebhook(input.request);
